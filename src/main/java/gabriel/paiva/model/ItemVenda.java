@@ -1,6 +1,6 @@
 package gabriel.paiva.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,5 +8,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ItemVenda extends Item {
+    @ManyToOne
+    @JoinColumn(name = "venda_id")
+    private Venda venda;
 
+    private Integer quantidade;
 }
