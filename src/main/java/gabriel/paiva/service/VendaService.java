@@ -38,4 +38,7 @@ public class VendaService {
     public List<ItemVenda> listarItensDaVenda(Long vendaId) {
         return buscarPorId(vendaId).getItens();
     }
+
+    public void excluir(Long id) {
+    }
 }

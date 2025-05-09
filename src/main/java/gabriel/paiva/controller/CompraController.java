@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 @Controller
 @RequestMapping("/compras")
@@ -36,7 +38,13 @@ public class CompraController {
 
     // Salvar uma nova compra
     @PostMapping
-    public String salvarCompra(Compra compra, RedirectAttributes redirectAttributes) {
+    public String salvarCompra(@Validated @ModelAttribute Compra compra,
+                               BindingResult result,
+                               RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "compras/form";
+        }
+
         compraService.salvar(compra);
         redirectAttributes.addFlashAttribute("mensagem", "Compra salva com sucesso!");
         return "redirect:/compras";
@@ -86,5 +94,26 @@ public class CompraController {
         itemCompraService.excluir(id);
         redirectAttributes.addFlashAttribute("mensagem", "Item excluído com sucesso!");
         return "redirect:/compras/" + compraId + "/itens";
+    }
+
+    // Adicionar método para edição
+    @GetMapping("/editar/{id}")
+    public String editarCompra(@PathVariable Long id, Model model) {
+        model.addAttribute("compra", compraService.buscarPorId(id));
+        return "compras/form";
+    }
+
+    @PostMapping("/editar/{id}")
+    public String atualizarCompra(@PathVariable Long id,
+                                  @Validated @ModelAttribute Compra compra,
+                                  BindingResult result,
+                                  RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "compras/form";
+        }
+
+        compraService.salvar(compra);
+        redirectAttributes.addFlashAttribute("mensagem", "Compra atualizada com sucesso!");
+        return "redirect:/compras";
     }
 }

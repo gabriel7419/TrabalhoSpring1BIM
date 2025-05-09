@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de Vendas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">Lista de Vendas</h1>
+
+  <a th:href="@{/vendas/nova}" class="btn btn-primary mb-3">Nova Venda</a>
+
+  <div class="card">
+    <div class="card-header bg-success text-white">
+      Vendas Cadastradas
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Data</th>
+          <th>Itens</th>
+          <th>Total</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="venda : ${vendas}">
+          <td th:text="${venda.id}"></td>
+          <td th:text="${venda.cliente}"></td>
+          <td th:text="${#temporals.format(venda.data, 'dd/MM/yyyy')}"></td>
+          <td>
+            <span class="badge bg-info" th:text="${venda.itens.size()} + ' itens'"></span>
+          </td>
+          <td th:text="${'R$ ' + #numbers.formatDecimal(venda.getTotal(), 1, 2)}"></td>
+          <td>
+            <a th:href="@{/vendas/{id}/itens(id=${venda.id})}"
+               class="btn btn-sm btn-info text-white">Itens</a>
+            <a th:href="@{/vendas/editar/{id}(id=${venda.id})}"
+               class="btn btn-sm btn-warning">Editar</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a th:href="@{/}" class="btn btn-secondary">Voltar para Home</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -23,4 +23,10 @@ public class Venda {
         itens.add(item);
         item.setVenda(this);
     }
+
+    public Double getTotal() {
+        return itens.stream()
+                .mapToDouble(item -> item.getPreco() * item.getQuantidade())
+                .sum();
+    }
 }
